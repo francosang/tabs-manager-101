@@ -1,0 +1,14 @@
+{
+  "manifest_version": 2,
+  "name": "Sudo Tabs 2",
+  "version": "1.0.0",
+  "icons": {
+    "48": "assets/logo.png"
+  },
+  "browser_action": {
+    "default_icon": "assets/logo.png",
+    "default_title": "Show Tabs",
+    "default_popup": "index.html"
+  },
+  "permissions": ["tabs"]
+}
