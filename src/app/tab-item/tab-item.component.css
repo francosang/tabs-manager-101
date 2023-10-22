@@ -1,0 +1,49 @@
+.action:hover {
+  background-color: rgb(155, 155, 155);
+  border-radius: 5px;
+}
+
+/* Style the row container */
+.item {
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid #ddd;
+  padding: 5px;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.item:first-of-type {
+  border-top: 1px solid #ddd;
+}
+
+.item:hover {
+  background-color: silver;
+  cursor: pointer;
+}
+
+/* Style the icon container with a minimum width */
+.icon {
+  flex: 0 0 auto; /* Don't grow, don't shrink, fixed width */
+  margin-right: 10px;
+  min-width: 16px;
+}
+
+.icon img {
+  max-width: 16px;
+  height: auto;
+}
+
+/* Style the name container to truncate text */
+.name {
+  flex: 1; /* Grow to take available space */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Style the button container with a minimum width */
+.button {
+  flex: 0 0 auto; /* Don't grow, don't shrink, fixed width */
+  margin-right: 5px;
+}

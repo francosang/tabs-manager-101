@@ -1,0 +1,10 @@
+<div class="item" (click)="onSelect(); $event.stopPropagation()">
+    <div class="icon">
+        <img src="{{ tab.icon }}" />
+    </div>
+    <div class="name">{{ tab.name }}</div>
+    <div class="button">
+        <i class="bi bi-x-lg float-end fw-bold action px-1" (click)="onDelete(); $event.stopPropagation()"></i>
+        <i class="bi bi-copy float-end fw-bold action px-1" (click)="onDuplicate(); $event.stopPropagation()"></i>
+    </div>
+</div>
