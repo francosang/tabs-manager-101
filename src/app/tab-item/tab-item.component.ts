@@ -8,6 +8,7 @@ import { Output, EventEmitter } from '@angular/core';
   styleUrls: ['./tab-item.component.css']
 })
 export class TabItemComponent {
+  public windows: Array<String> = ["Windows 1", "Windows 2"]
 
   @Input() tab!: Tab;
 
@@ -25,5 +26,9 @@ export class TabItemComponent {
 
   onDuplicate() {
     this.onTabDuplicated.emit(this.tab);
+  }
+
+  moveToWindow(window: String) {
+    console.log('Move to', window);
   }
 }
