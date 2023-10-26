@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { Tab } from '../domain/tab';
+import { Tab, Window } from '../domain';
 import { Output, EventEmitter } from '@angular/core';
 
 @Component({
@@ -8,13 +8,14 @@ import { Output, EventEmitter } from '@angular/core';
   styleUrls: ['./tab-item.component.css']
 })
 export class TabItemComponent {
-  public windows: Array<String> = ["Windows 1", "Windows 2"]
-
   @Input() tab!: Tab;
+  @Input() windows!: Array<Window>;
 
   @Output() onTabSelected = new EventEmitter<Tab>();
   @Output() onTabDuplicated = new EventEmitter<Tab>();
   @Output() onTabDeleted = new EventEmitter<Tab>();
+  @Output() onTabMovedToWindow = new EventEmitter<[Tab, Window]>();
+  @Output() onTabMovedToNewWindow = new EventEmitter<[Tab]>();
 
   onSelect() {
     this.onTabSelected.emit(this.tab);
@@ -28,7 +29,11 @@ export class TabItemComponent {
     this.onTabDuplicated.emit(this.tab);
   }
 
-  moveToWindow(window: String) {
-    console.log('Move to', window);
+  moveToWindow(window: Window) {
+    this.onTabMovedToWindow.emit([this.tab, window]);
+  }
+
+  moveToNew() {
+    this.onTabMovedToNewWindow.emit([this.tab]);
   }
 }

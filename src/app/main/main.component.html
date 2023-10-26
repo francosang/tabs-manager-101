@@ -11,5 +11,7 @@
     </div>
 </nav>
 
-<app-tab-item *ngFor="let item of filteredTabs();" [tab]="item" (onTabSelected)="selectTab($event)"
-    (onTabDeleted)="removeTab($event)" (onTabDuplicated)="duplicateTab($event)"></app-tab-item>
+<app-tab-item *ngFor="let item of filteredTabs();" [tab]="item" [windows]="windows" (onTabSelected)="selectTab($event)"
+    (onTabDeleted)="removeTab($event)" (onTabDuplicated)="duplicateTab($event)"
+    (onTabMovedToWindow)="changeWindow($event)" (onTabMovedToNewWindow)="newWindow()">
+</app-tab-item>

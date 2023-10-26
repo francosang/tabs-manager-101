@@ -1,4 +1,4 @@
-import { Tab } from "../domain/tab";
+import { Tab, Window } from "../domain";
 import { Component, OnInit } from '@angular/core';
 
 @Component({
@@ -8,27 +8,38 @@ import { Component, OnInit } from '@angular/core';
 })
 export class MainComponent implements OnInit {
 
-  tabs:Tab[] = [];
+  tabs: Tab[] = [];
+  windows: Window[] = [];
   query?: string;
-
 
   ngOnInit(): void {
     this.loadTabs();
   }
 
   async loadTabs(): Promise<void> {
-
-    const fetchedTabs = await browser.tabs.query({ currentWindow: true });
+    const [fetchedTabs, fetchedWindows] = await Promise.all([
+      browser.tabs.query({ currentWindow: true }),
+      browser.windows.getAll(),
+    ]);
 
     this.tabs = fetchedTabs
-      .map((tab) => (<Tab> {
+      .map(tab => <Tab>{
         id: tab.id,
         url: tab.url,
         name: tab.title,
         icon: tab.favIconUrl,
+        winId: tab.windowId,
         lastAccessed: tab.lastAccessed,
-      }))
+      })
       .sort((a, b) => b.lastAccessed - a.lastAccessed);
+
+    this.windows = fetchedWindows.map((w, index) => {
+      return <Window>{
+        id: w.id,
+        active: w.focused,
+        name: `Window ${index + 1}`,
+      }
+    });
   }
 
   filteredTabs(): Array<Tab> {
@@ -50,16 +61,30 @@ export class MainComponent implements OnInit {
     window.close();
   }
 
-  async  removeTab(tab: Tab) {
+  async removeTab(tab: Tab) {
     await browser.tabs.remove(tab.id);
 
     await this.loadTabs();
   }
 
-  async  duplicateTab(tab: Tab) {
+  async duplicateTab(tab: Tab) {
     await browser.tabs.duplicate(tab.id);
 
     await this.loadTabs();
   }
 
+  async changeWindow(event: [Tab, Window]) {
+    const [tab, wind] = event;
+
+    await browser.tabs.move(tab.id, {
+      windowId: wind.id,
+      index: -1,
+    });
+
+    await this.loadTabs();
+  }
+
+  async newWindow() {
+    await this.loadTabs();
+  }
 }

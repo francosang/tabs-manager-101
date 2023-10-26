@@ -10,8 +10,18 @@
             role="button" data-bs-toggle="dropdown"></i>
 
         <ul class="dropdown-menu">
-            <li *ngFor="let win of windows" (click)="moveToWindow(win); $event.stopPropagation()"><a
-                    class="dropdown-item">{{ win }}</a></li>
+
+            <ng-container *ngFor="let win of windows">
+
+                <li *ngIf="tab.winId != win.id" (click)="moveToWindow(win); $event.stopPropagation()">
+                    <a class="dropdown-item">{{ win.name }}</a>
+                </li>
+
+            </ng-container>
+
+            <li (click)="moveToNew(); $event.stopPropagation()">
+                <a class="dropdown-item">Move to new window</a>
+            </li>
         </ul>
 
     </div>
