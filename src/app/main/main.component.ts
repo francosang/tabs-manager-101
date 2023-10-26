@@ -84,7 +84,7 @@ export class MainComponent implements OnInit {
     await this.loadTabs();
   }
 
-  async newWindow() {
-    await this.loadTabs();
+  async newWindow(tab: Tab) {
+    await browser.windows.create({ tabId: tab.id });
   }
 }

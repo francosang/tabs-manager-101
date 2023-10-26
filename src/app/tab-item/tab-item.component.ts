@@ -15,7 +15,7 @@ export class TabItemComponent {
   @Output() onTabDuplicated = new EventEmitter<Tab>();
   @Output() onTabDeleted = new EventEmitter<Tab>();
   @Output() onTabMovedToWindow = new EventEmitter<[Tab, Window]>();
-  @Output() onTabMovedToNewWindow = new EventEmitter<[Tab]>();
+  @Output() onTabMovedToNewWindow = new EventEmitter<Tab>();
 
   onSelect() {
     this.onTabSelected.emit(this.tab);
@@ -34,6 +34,6 @@ export class TabItemComponent {
   }
 
   moveToNew() {
-    this.onTabMovedToNewWindow.emit([this.tab]);
+    this.onTabMovedToNewWindow.emit(this.tab);
   }
 }

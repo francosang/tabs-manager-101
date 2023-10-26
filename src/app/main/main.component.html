@@ -13,5 +13,5 @@
 
 <app-tab-item *ngFor="let item of filteredTabs();" [tab]="item" [windows]="windows" (onTabSelected)="selectTab($event)"
     (onTabDeleted)="removeTab($event)" (onTabDuplicated)="duplicateTab($event)"
-    (onTabMovedToWindow)="changeWindow($event)" (onTabMovedToNewWindow)="newWindow()">
+    (onTabMovedToWindow)="changeWindow($event)" (onTabMovedToNewWindow)="newWindow($event)">
 </app-tab-item>
