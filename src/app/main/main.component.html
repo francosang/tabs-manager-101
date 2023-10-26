@@ -1,21 +1,47 @@
-<nav class="navbar bg-body-tertiary">
-    <div class="container-fluid">
-        <a class="navbar-brand">Sudo Tabs</a>
-
-        <select [(ngModel)]="currentWindow" (ngModelChange)="onWindowChanged()">
-            <option *ngFor="let w of windows" [ngValue]="w">{{ w.name }}</option>
+<div class="c">
+  <div class="header">
+    <nav class="navbar bg-body-tertiary">
+      <div class="container-fluid">
+        <a class="navbar-brand">Tabs</a>
+        <select
+          *ngIf="windows.length > 1"
+          [(ngModel)]="currentWindow"
+          (ngModelChange)="onWindowChanged()"
+        >
+          <option *ngFor="let w of windows" [ngValue]="w">
+            {{ w.name }}
+          </option>
+          <option [ngValue]="null">All windows</option>
         </select>
 
-        <span>{{ tabs.length }} tabs</span>
-
         <form class="d-flex" role="filter">
-            <input class="form-control me-2" type="text" placeholder="Filter" aria-label="Filter" name="query" autofocus
-                [(ngModel)]="query" />
+          <input
+            [(ngModel)]="query"
+            class="form-control me-2"
+            type="text"
+            placeholder="Filter"
+            aria-label="Filter"
+            name="query"
+            autofocus
+          />
         </form>
-    </div>
-</nav>
+      </div>
+    </nav>
+  </div>
 
-<app-tab-item *ngFor="let item of filteredTabs()" [tab]="item" [windows]="windows" (onTabSelected)="selectTab($event)"
-    (onTabDeleted)="removeTab($event)" (onTabDuplicated)="duplicateTab($event)"
-    (onTabMovedToWindow)="changeWindow($event)" (onTabMovedToNewWindow)="newWindow($event)">
-</app-tab-item>
+  <div class="content">
+    <app-tab-item
+      *ngFor="let item of filteredTabs()"
+      [tab]="item"
+      [windows]="windows"
+      (onTabSelected)="selectTab($event)"
+      (onTabDeleted)="removeTab($event)"
+      (onTabDuplicated)="duplicateTab($event)"
+      (onTabMovedToWindow)="changeWindow($event)"
+      (onTabMovedToNewWindow)="newWindow($event)"
+    >
+    </app-tab-item>
+  </div>
+
+  <div class="footer">{{ tabs.length }} tabs</div>
+</div>

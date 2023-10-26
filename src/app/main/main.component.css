@@ -1,0 +1,22 @@
+.c {
+  height: 600px;
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  background-color: #333;
+  color: #fff;
+  text-align: center;
+}
+
+.content {
+  flex: 1;
+  overflow: auto;
+}
+
+.footer {
+  background-color: #333;
+  color: #fff;
+  text-align: center;
+}
