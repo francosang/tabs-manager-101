@@ -2,7 +2,11 @@
     <div class="container-fluid">
         <a class="navbar-brand">Sudo Tabs</a>
 
-        <a>{{ tabs.length }} Tabs</a>
+        <select [(ngModel)]="currentWindow" (ngModelChange)="onWindowChanged()">
+            <option *ngFor="let w of windows" [ngValue]="w">{{ w.name }}</option>
+        </select>
+
+        <span>{{ tabs.length }} tabs</span>
 
         <form class="d-flex" role="filter">
             <input class="form-control me-2" type="text" placeholder="Filter" aria-label="Filter" name="query" autofocus
@@ -11,7 +15,7 @@
     </div>
 </nav>
 
-<app-tab-item *ngFor="let item of filteredTabs();" [tab]="item" [windows]="windows" (onTabSelected)="selectTab($event)"
+<app-tab-item *ngFor="let item of filteredTabs()" [tab]="item" [windows]="windows" (onTabSelected)="selectTab($event)"
     (onTabDeleted)="removeTab($event)" (onTabDuplicated)="duplicateTab($event)"
     (onTabMovedToWindow)="changeWindow($event)" (onTabMovedToNewWindow)="newWindow($event)">
 </app-tab-item>

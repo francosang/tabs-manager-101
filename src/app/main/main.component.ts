@@ -7,20 +7,34 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./main.component.sass']
 })
 export class MainComponent implements OnInit {
-
   tabs: Tab[] = [];
+
   windows: Window[] = [];
+  currentWindow?: Window;
+
   query?: string;
 
-  ngOnInit(): void {
-    this.loadTabs();
+  async ngOnInit(): Promise<void> {
+    await this.loadWindows();
+  }
+
+  async loadWindows(): Promise<void> {
+    const fetchedWindows = await browser.windows.getAll();
+
+    this.windows = fetchedWindows.map((w, index) => {
+      return <Window>{
+        id: w.id,
+        active: w.focused,
+        name: `Window ${index + 1}`,
+      }
+    });
+    this.currentWindow = this.windows.find(w => w.active);
+
+    await this.loadTabs();
   }
 
   async loadTabs(): Promise<void> {
-    const [fetchedTabs, fetchedWindows] = await Promise.all([
-      browser.tabs.query({ currentWindow: true }),
-      browser.windows.getAll(),
-    ]);
+    const fetchedTabs = await browser.tabs.query({ windowId: this.currentWindow?.id });
 
     this.tabs = fetchedTabs
       .map(tab => <Tab>{
@@ -32,14 +46,12 @@ export class MainComponent implements OnInit {
         lastAccessed: tab.lastAccessed,
       })
       .sort((a, b) => b.lastAccessed - a.lastAccessed);
+  }
 
-    this.windows = fetchedWindows.map((w, index) => {
-      return <Window>{
-        id: w.id,
-        active: w.focused,
-        name: `Window ${index + 1}`,
-      }
-    });
+  onWindowChanged() {
+    console.log('onWindowChanged()');
+
+    this.loadTabs();
   }
 
   filteredTabs(): Array<Tab> {
