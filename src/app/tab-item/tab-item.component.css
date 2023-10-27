@@ -16,8 +16,8 @@
   padding-left: 10px;
 }
 
-.item:first-of-type {
-  border-top: 1px solid #ddd;
+.item {
+  border-bottom: 1px solid #ddd;
 }
 
 .item:hover {

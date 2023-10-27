@@ -1,28 +1,38 @@
 <div class="item" (click)="onSelect(); $event.stopPropagation()">
-    <div class="icon">
-        <img src="{{ tab.icon }}" />
-    </div>
-    <div class="name">{{ tab.name }}</div>
-    <div class="button">
-        <i class="bi bi-x-lg float-end fw-bold action px-1" (click)="onDelete(); $event.stopPropagation()"></i>
-        <i class="bi bi-copy float-end fw-bold action px-1" (click)="onDuplicate(); $event.stopPropagation()"></i>
-        <i class="bi bi-three-dots-vertical float-end fw-bold action px-1" (click)="$event.stopPropagation()" href="#"
-            role="button" data-bs-toggle="dropdown"></i>
+  <div class="icon">
+    <img src="{{ tab.icon }}" />
+  </div>
+  <div class="name">{{ tab.name }}</div>
+  <div class="button">
+    <i
+      class="bi bi-x-lg float-end fw-bold action px-1"
+      (click)="onDelete(); $event.stopPropagation()"
+    ></i>
+    <i
+      class="bi bi-copy float-end fw-bold action px-1"
+      (click)="onDuplicate(); $event.stopPropagation()"
+    ></i>
+    <i
+      class="bi bi-three-dots-vertical float-end fw-bold action px-1"
+      (click)="$event.stopPropagation()"
+      href="#"
+      role="button"
+      data-bs-toggle="dropdown"
+    ></i>
 
-        <ul class="dropdown-menu">
+    <ul class="dropdown-menu">
+      <ng-container *ngFor="let win of windows">
+        <li
+          *ngIf="tab.winId != win.id"
+          (click)="moveToWindow(win); $event.stopPropagation()"
+        >
+          <a class="dropdown-item">{{ win.name }}</a>
+        </li>
+      </ng-container>
 
-            <ng-container *ngFor="let win of windows">
-
-                <li *ngIf="tab.winId != win.id" (click)="moveToWindow(win); $event.stopPropagation()">
-                    <a class="dropdown-item">{{ win.name }}</a>
-                </li>
-
-            </ng-container>
-
-            <li (click)="moveToNew(); $event.stopPropagation()">
-                <a class="dropdown-item">Move to new window</a>
-            </li>
-        </ul>
-
-    </div>
+      <li (click)="moveToNew(); $event.stopPropagation()">
+        <a class="dropdown-item">Move to new window</a>
+      </li>
+    </ul>
+  </div>
 </div>
