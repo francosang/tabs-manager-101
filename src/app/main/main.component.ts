@@ -1,10 +1,12 @@
-import { Tab, Window } from "../domain";
-import { Component, OnInit } from '@angular/core';
+import { Tab, Window } from '../domain';
+import { Component, ElementRef, OnInit, Renderer2 } from '@angular/core';
+
+declare const bootstrap: any;
 
 @Component({
   selector: 'app-main',
   templateUrl: './main.component.html',
-  styleUrls: ['./main.component.css']
+  styleUrls: ['./main.component.css'],
 })
 export class MainComponent implements OnInit {
   tabs: Tab[] = [];
@@ -15,6 +17,13 @@ export class MainComponent implements OnInit {
   query?: string;
 
   async ngOnInit(): Promise<void> {
+    const tooltipTriggerList = document.querySelectorAll(
+      '[data-bs-toggle="tooltip"]'
+    );
+    tooltipTriggerList.forEach(
+      (tooltipTriggerEl) => new bootstrap.Tooltip(tooltipTriggerEl)
+    );
+
     await this.loadWindows();
   }
 
@@ -26,25 +35,30 @@ export class MainComponent implements OnInit {
         id: w.id,
         active: w.focused,
         name: `Window ${index + 1}`,
-      }
+      };
     });
-    this.currentWindow = this.windows.find(w => w.active);
+    this.currentWindow = this.windows.find((w) => w.active);
 
     await this.loadTabs();
   }
 
   async loadTabs(): Promise<void> {
-    const fetchedTabs = await browser.tabs.query({ windowId: this.currentWindow?.id });
+    const fetchedTabs = await browser.tabs.query({
+      windowId: this.currentWindow?.id,
+    });
 
     this.tabs = fetchedTabs
-      .map(tab => <Tab>{
-        id: tab.id,
-        url: tab.url,
-        name: tab.title,
-        icon: tab.favIconUrl,
-        winId: tab.windowId,
-        lastAccessed: tab.lastAccessed,
-      })
+      .map(
+        (tab) =>
+          <Tab>{
+            id: tab.id,
+            url: tab.url,
+            name: tab.title,
+            icon: tab.favIconUrl,
+            winId: tab.windowId,
+            lastAccessed: tab.lastAccessed,
+          }
+      )
       .sort((a, b) => b.lastAccessed - a.lastAccessed);
   }
 
@@ -59,7 +73,8 @@ export class MainComponent implements OnInit {
     if (query != null) {
       const q = query.toLowerCase();
       return this.tabs.filter(
-        (t) => t.url.toLowerCase().includes(q) || t.name.toLowerCase().includes(q)
+        (t) =>
+          t.url.toLowerCase().includes(q) || t.name.toLowerCase().includes(q)
       );
     }
 
@@ -98,5 +113,28 @@ export class MainComponent implements OnInit {
 
   async newWindow(tab: Tab) {
     await browser.windows.create({ tabId: tab.id });
+  }
+
+  async removeDuplicates() {
+    const duplications: IterableIterator<[string, Array<number>]> = this.tabs
+      .reduce((accumulator, tab) => {
+        const list = accumulator.get(tab.url) ?? [];
+        list.push(tab.id);
+        return accumulator.set(tab.url, list);
+      }, new Map<string, Array<number>>())
+      .entries();
+
+    const toDelete = Array.from(duplications)
+      .filter((it) => {
+        return it[1].length > 1;
+      })
+      .flatMap((it) => {
+        return Array.from(it[1])
+          .sort((a, b) => a - b)
+          .splice(1, it[1].length);
+      });
+
+    await browser.tabs.remove(toDelete);
+    await this.loadTabs();
   }
 }

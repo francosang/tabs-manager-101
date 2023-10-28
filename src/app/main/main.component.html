@@ -43,5 +43,14 @@
     </app-tab-item>
   </div>
 
-  <div class="footer">{{ tabs.length }} tabs</div>
+  <div class="footer">
+    <span
+      class="bi-copy float-end action px-1"
+      data-bs-toggle="tooltip"
+      data-bs-placement="top"
+      data-bs-title="Delete duplicates"
+      (click)="removeDuplicates()"
+    ></span>
+    {{ tabs.length }} tabs
+  </div>
 </div>
