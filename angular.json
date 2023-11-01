@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "sudo-tabs-extension-v3": {
+    "tabs-101": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -17,7 +17,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/sudo-tabs-extension-v3",
+            "outputPath": "dist",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": [
@@ -76,10 +76,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "sudo-tabs-extension-v3:build:production"
+              "browserTarget": "tabs-101:build:production"
             },
             "development": {
-              "browserTarget": "sudo-tabs-extension-v3:build:development"
+              "browserTarget": "tabs-101:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -87,7 +87,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "sudo-tabs-extension-v3:build"
+            "browserTarget": "tabs-101:build"
           }
         },
         "test": {
