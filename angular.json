@@ -31,9 +31,13 @@
               "src/assets"
             ],
             "styles": [
+              "src/assets/bootstrap.min.css",
+              "src/assets/bootstrap-icons.min.css",
               "src/styles.sass"
             ],
-            "scripts": []
+            "scripts": [
+              "src/assets/bootstrap.bundle.min.js"
+            ]
           },
           "configurations": {
             "production": {
@@ -49,7 +53,12 @@
                   "maximumError": "4kb"
                 }
               ],
-              "outputHashing": "all"
+              "outputHashing": "all",
+              "optimization": {
+                "styles": {
+                  "inlineCritical": false
+                }
+              }
             },
             "development": {
               "buildOptimizer": false,
@@ -94,9 +103,13 @@
               "src/assets"
             ],
             "styles": [
+              "src/assets/bootstrap.min.css",
+              "src/assets/bootstrap-icons.min.css",
               "src/styles.sass"
             ],
-            "scripts": []
+            "scripts": [
+              "src/assets/bootstrap.bundle.min.js"
+            ]
           }
         },
         "lint": {
