@@ -17,7 +17,7 @@
 }
 
 .footer {
-  text-align: center;
+  width: 100%;
   border-top: 1px solid #ddd;
   padding: 4px;
 }

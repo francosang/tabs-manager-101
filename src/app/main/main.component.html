@@ -3,16 +3,6 @@
     <nav class="navbar bg-body-tertiary">
       <div class="container-fluid">
         <a class="navbar-brand">Tabs</a>
-        <select
-          *ngIf="windows.length > 1"
-          [(ngModel)]="currentWindow"
-          (ngModelChange)="onWindowChanged()"
-        >
-          <option *ngFor="let w of windows" [ngValue]="w">
-            {{ w.name }}
-          </option>
-          <option [ngValue]="null">All windows</option>
-        </select>
 
         <form class="d-flex" role="filter">
           <input
@@ -44,21 +34,48 @@
   </div>
 
   <div class="footer">
-    {{ tabs.length }} tabs
-    <span
-      class="action px-1 bi-copy"
-      data-bs-toggle="tooltip"
-      data-bs-placement="top"
-      data-bs-title="Delete duplicates"
-      (click)="removeDuplicates()"
-    ></span>
+    <div class="w-100 p-0 m-0">
+      <div class="row p-0 m-0">
+        <div class="col p-0 m-0">
+          <select
+            *ngIf="windows.length > 1"
+            [(ngModel)]="currentWindow"
+            (ngModelChange)="onWindowChanged()"
+          >
+            <option *ngFor="let w of windows" [ngValue]="w">
+              {{ w.name }}
+            </option>
+            <option [ngValue]="null">All windows</option>
+          </select>
 
-    <span
-      class="action px-1 bi-sort-alpha-down"
-      data-bs-toggle="tooltip"
-      data-bs-placement="top"
-      data-bs-title="Order by domain"
-      (click)="orderByDomain()"
-    ></span>
+          {{ tabs.length }} tabs
+        </div>
+        <div class="col p-0 m-0">
+          <span
+            class="action float-end px-1 bi-copy"
+            data-bs-toggle="tooltip"
+            data-bs-placement="top"
+            data-bs-title="Delete duplicates"
+            (click)="removeDuplicates()"
+          ></span>
+
+          <span
+            class="action float-end px-1 bi-sort-alpha-down"
+            data-bs-toggle="tooltip"
+            data-bs-placement="top"
+            data-bs-title="Order by domain"
+            (click)="orderByDomain()"
+          ></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- <div>
+
+    </div>
+
+    <div>
+
+    </div> -->
   </div>
 </div>
