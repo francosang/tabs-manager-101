@@ -2,5 +2,6 @@
   "spellright.language": [
     "en",
     "es"
-  ]
+  ],
+  "typescript.suggest.completeFunctionCalls": true,
 }

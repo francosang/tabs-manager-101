@@ -137,4 +137,20 @@ export class MainComponent implements OnInit {
     await browser.tabs.remove(toDelete);
     await this.loadTabs();
   }
+
+  async orderByDomain() {
+    console.log(this.tabs);
+
+    const tabs = this.tabs;
+
+    tabs.sort((a, b) => {
+      console.log(new URL(a.url));
+      return new URL(a.url).hostname.localeCompare(new URL(b.url).hostname);
+    });
+
+    for (let index = 0; index < tabs.length; index++) {
+      const tab = tabs[index];
+      await browser.tabs.move(tab.id, { index: index });
+    }
+  }
 }
