@@ -1,4 +1,5 @@
 import { Tab, Window } from '../domain';
+import { parse } from 'tldts';
 import { Component, ElementRef, OnInit, Renderer2 } from '@angular/core';
 
 declare const bootstrap: any;
@@ -144,8 +145,20 @@ export class MainComponent implements OnInit {
     const tabs = this.tabs;
 
     tabs.sort((a, b) => {
-      console.log(new URL(a.url));
-      return new URL(a.url).hostname.localeCompare(new URL(b.url).hostname);
+      const resA = parse(a.url);
+      if (resA == null || resA.domainWithoutSuffix == null) return -1;
+
+      const resB = parse(b.url);
+      if (resB == null || resB.domainWithoutSuffix == null) return 1;
+
+      if (resA.domainWithoutSuffix == resB.domainWithoutSuffix) {
+        if (resA == null || resA.subdomain == null) return -1;
+        if (resB == null || resB.subdomain == null) return 1;
+
+        return resA.subdomain.localeCompare(resB.subdomain);
+      }
+
+      return resA.domainWithoutSuffix.localeCompare(resB.domainWithoutSuffix);
     });
 
     for (let index = 0; index < tabs.length; index++) {
