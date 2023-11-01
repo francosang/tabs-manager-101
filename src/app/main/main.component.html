@@ -4,6 +4,12 @@
       <div class="container-fluid">
         <a class="navbar-brand">Tabs</a>
 
+        <select [(ngModel)]="currentSorter" (ngModelChange)="loadTabs()">
+          <option *ngFor="let s of sorters" [ngValue]="s">
+            {{ s.name }}
+          </option>
+        </select>
+
         <form class="d-flex" role="filter">
           <input
             [(ngModel)]="query"
@@ -40,7 +46,7 @@
           <select
             *ngIf="windows.length > 1"
             [(ngModel)]="currentWindow"
-            (ngModelChange)="onWindowChanged()"
+            (ngModelChange)="loadTabs()"
           >
             <option *ngFor="let w of windows" [ngValue]="w">
               {{ w.name }}
@@ -55,7 +61,7 @@
             class="action float-end px-1 bi-copy"
             data-bs-toggle="tooltip"
             data-bs-placement="top"
-            data-bs-title="Delete duplicates"
+            data-bs-title="Delete duplicates tabs"
             (click)="removeDuplicates()"
           ></span>
 
@@ -63,7 +69,7 @@
             class="action float-end px-1 bi-sort-alpha-down"
             data-bs-toggle="tooltip"
             data-bs-placement="top"
-            data-bs-title="Order by domain"
+            data-bs-title="Arrange tabs by domain"
             (click)="orderByDomain()"
           ></span>
         </div>

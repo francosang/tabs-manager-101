@@ -1,8 +1,46 @@
 import { Tab, Window } from '../domain';
 import { parse } from 'tldts';
-import { Component, ElementRef, OnInit, Renderer2 } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 declare const bootstrap: any;
+
+class Sorter<T> {
+  name: string;
+  compareFn: (a: T, b: T) => number;
+
+  constructor(name: string, compareFn: (a: T, b: T) => number) {
+    this.name = name;
+    this.compareFn = compareFn;
+  }
+}
+
+const domainCompareFn = (a: Tab, b: Tab) => {
+  const resA = parse(a.url);
+  if (resA == null || resA.domainWithoutSuffix == null) return -1;
+
+  const resB = parse(b.url);
+  if (resB == null || resB.domainWithoutSuffix == null) return 1;
+
+  if (resA.domainWithoutSuffix == resB.domainWithoutSuffix) {
+    if (resA == null || resA.subdomain == null) return -1;
+    if (resB == null || resB.subdomain == null) return 1;
+
+    return resA.subdomain.localeCompare(resB.subdomain);
+  }
+
+  return resA.domainWithoutSuffix.localeCompare(resB.domainWithoutSuffix);
+};
+
+const lastAccesedCompareFn = (a: Tab, b: Tab) => {
+  return b.lastAccessed - a.lastAccessed;
+};
+
+const lastAccessedSorter = new Sorter<Tab>(
+  'Sort by last accessed',
+  lastAccesedCompareFn
+);
+
+const domainSorter = new Sorter<Tab>('Sort by domain', domainCompareFn);
 
 @Component({
   selector: 'app-main',
@@ -16,6 +54,9 @@ export class MainComponent implements OnInit {
   currentWindow?: Window;
 
   query?: string;
+
+  sorters: Sorter<Tab>[] = [lastAccessedSorter, domainSorter];
+  currentSorter = lastAccessedSorter;
 
   async ngOnInit(): Promise<void> {
     const tooltipTriggerList = document.querySelectorAll(
@@ -60,13 +101,7 @@ export class MainComponent implements OnInit {
             lastAccessed: tab.lastAccessed,
           }
       )
-      .sort((a, b) => b.lastAccessed - a.lastAccessed);
-  }
-
-  onWindowChanged() {
-    console.log('onWindowChanged()');
-
-    this.loadTabs();
+      .sort(this.currentSorter.compareFn);
   }
 
   filteredTabs(): Array<Tab> {
@@ -144,22 +179,8 @@ export class MainComponent implements OnInit {
 
     const tabs = this.tabs;
 
-    tabs.sort((a, b) => {
-      const resA = parse(a.url);
-      if (resA == null || resA.domainWithoutSuffix == null) return -1;
-
-      const resB = parse(b.url);
-      if (resB == null || resB.domainWithoutSuffix == null) return 1;
-
-      if (resA.domainWithoutSuffix == resB.domainWithoutSuffix) {
-        if (resA == null || resA.subdomain == null) return -1;
-        if (resB == null || resB.subdomain == null) return 1;
-
-        return resA.subdomain.localeCompare(resB.subdomain);
-      }
-
-      return resA.domainWithoutSuffix.localeCompare(resB.domainWithoutSuffix);
-    });
+    this.currentSorter = domainSorter;
+    tabs.sort(domainSorter.compareFn);
 
     for (let index = 0; index < tabs.length; index++) {
       const tab = tabs[index];
