@@ -10,6 +10,11 @@
 		"128": "assets/browsers128.png",
 		"256": "assets/browsers256.png"
   },
+  "background": {
+		"scripts": ["background.js"],
+		"persistent": true,
+    "type": "module"
+	},
   "browser_action": {
     "default_icon": {
 			"16": "assets/browsers16.png",
