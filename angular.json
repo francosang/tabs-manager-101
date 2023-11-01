@@ -32,12 +32,12 @@
               "src/assets"
             ],
             "styles": [
-              "src/assets/bootstrap.min.css",
-              "src/assets/bootstrap-icons.min.css",
+              "vendor/bootstrap.min.css",
+              "vendor/bootstrap-icons.min.css",
               "src/styles.sass"
             ],
             "scripts": [
-              "src/assets/bootstrap.bundle.min.js"
+              "vendor/bootstrap.bundle.min.js"
             ]
           },
           "configurations": {
@@ -106,12 +106,12 @@
               "src/assets"
             ],
             "styles": [
-              "src/assets/bootstrap.min.css",
-              "src/assets/bootstrap-icons.min.css",
+              "vendor/bootstrap.min.css",
+              "vendor/bootstrap-icons.min.css",
               "src/styles.sass"
             ],
             "scripts": [
-              "src/assets/bootstrap.bundle.min.js"
+              "vendor/bootstrap.bundle.min.js"
             ]
           }
         },
